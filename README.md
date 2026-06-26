@@ -4,7 +4,7 @@
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-62B47A?style=flat&logo=minecraft&logoColor=white)](https://minecraft.net)
 [![Fabric](https://img.shields.io/badge/Fabric_Loader-0.16.9+-DBB589?style=flat)](https://fabricmc.net)
 [![License](https://img.shields.io/github/license/IamSboby/Custom-icon-mc-mod?style=flat&label=License)](LICENSE)
-[![Instagram](https://img.shields.io/badge/Instagram-sboby4all-E4405F?style=flat&logo=instagram&logoColor=white)](https://www.instagram.com/sboby4all)
+[![Discord](https://img.shields.io/badge/Discord-Reversal_-5865F2?style=flat&logo=discord&logoColor=white)](https://discord.gg/jxQtq3XBKv)
 
 Replaces the Minecraft OS window icon (taskbar / dock / title bar) with a user-supplied `logo.png`, with zero configuration and no extra dependencies.
 
