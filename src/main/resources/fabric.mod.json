@@ -6,8 +6,18 @@
   "description": "Replaces the Minecraft taskbar icon with your own logo.png, no config, just drop the \"icon.png\" in the mods folder or in the instance root folder ",
   "authors": [
     "§dwavedtime",
-    "§aSboby_ on Modrinth",
-    "§6albuxxo._ on Modrinth"
+    {
+      "name": "§aSboby_",
+      "contact": {
+        "homepage": "https://modrinth.com/user/Sboby_"
+      }
+    },
+    {
+      "name": "§6Albuz999",
+      "contact": {
+        "homepage": "https://modrinth.com/user/Albuz999"
+      }
+    }
   ],
   "contact": {},
   "license": "MIT",
