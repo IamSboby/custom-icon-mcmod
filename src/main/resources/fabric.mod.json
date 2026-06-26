@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "customlogo",
+  "version": "${version}",
+  "name": "Custom Icon",
+  "description": "Replaces the Minecraft taskbar icon with your own logo.png, no config, just drop the \"icon.png\" in the mods folder or in the instance root folder ",
+  "authors": [
+    "§dwavedtime",
+    "§aSboby_ on Modrinth",
+    "§6albuxxo._ on Modrinth"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/customlogo/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.customicon.CustomIconClient"
+    ],
+    "modmenu": [
+      "com.customicon.modmenu.CustomLogoModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "customlogo.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

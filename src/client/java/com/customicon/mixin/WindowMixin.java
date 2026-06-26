@@ -1,0 +1,98 @@
+package com.customicon.mixin;
+import com.customicon.CustomIconClient;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.Window;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWImage;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@Mixin(Window.class)
+public class WindowMixin {
+
+    @Shadow
+    private long handle;
+
+    /**
+     * Inject after the window is created and the default icon is set.
+     * We target the end of the Window constructor.
+     */
+    @Inject(
+        method = "setIcon",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void onSetIcon(CallbackInfo ci) {
+        // Try to load logo.png from the game directory (where the .minecraft folder is)
+        Path logoPath = Paths.get("logo.png");
+
+        if (!Files.exists(logoPath)) {
+            // Also try inside the mods folder
+            logoPath = Paths.get("mods", "logo.png");
+        }
+
+        if (!Files.exists(logoPath)) {
+            CustomIconClient.LOGGER.warn("[CustomIcon] logo.png not found in game directory or mods folder. " +
+                    "Place logo.png in your .minecraft folder.");
+            return; // Let vanilla handle the icon
+        }
+
+        CustomIconClient.LOGGER.info("[CustomIcon] Loading custom icon from: {}", logoPath.toAbsolutePath());
+
+        try {
+            byte[] imageBytes = Files.readAllBytes(logoPath);
+            ByteBuffer rawBuffer = MemoryUtil.memAlloc(imageBytes.length);
+            rawBuffer.put(imageBytes);
+            rawBuffer.flip();
+
+            try (MemoryStack stack = MemoryStack.stackPush()) {
+                IntBuffer w = stack.mallocInt(1);
+                IntBuffer h = stack.mallocInt(1);
+                IntBuffer comp = stack.mallocInt(1);
+
+                // Force RGBA (4 channels)
+                ByteBuffer pixels = STBImage.stbi_load_from_memory(rawBuffer, w, h, comp, 4);
+
+                if (pixels == null) {
+                    CustomIconClient.LOGGER.error("[CustomIcon] Failed to decode logo.png: {}", STBImage.stbi_failure_reason());
+                    MemoryUtil.memFree(rawBuffer);
+                    return;
+                }
+
+                GLFWImage.Buffer icons = GLFWImage.malloc(1, stack);
+                icons.position(0)
+                        .width(w.get(0))
+                        .height(h.get(0))
+                        .pixels(pixels);
+
+                GLFW.glfwSetWindowIcon(handle, icons);
+
+                STBImage.stbi_image_free(pixels);
+                CustomIconClient.LOGGER.info("[CustomIcon] Custom icon applied successfully ({}x{}).", w.get(0), h.get(0));
+            }
+
+            MemoryUtil.memFree(rawBuffer);
+
+            // Cancel the vanilla icon setting since we applied our own
+            ci.cancel();
+
+        } catch (IOException e) {
+            CustomIconClient.LOGGER.error("[CustomIcon] Could not read logo.png", e);
+        }
+    }
+}
