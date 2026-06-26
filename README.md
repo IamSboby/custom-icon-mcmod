@@ -1,6 +1,6 @@
 # Custom-icon-mc-mod — Fabric mod for Minecraft 1.21.1
 
-[![GitHub release](https://img.shields.io/github/v/release/IamSboby/Custom-icon-mcmod?style=flat&color=181717)](https://github.com/IamSboby/Custom-icon-mcmod/releases)
+[![GitHub release](https://img.shields.io/github/v/release/IamSboby/Custom-icon-mcmod?style=flat&color=181717)](https://github.com/IamSboby/custom-icon-mcmod/releases)
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-62B47A?style=flat&logo=minecraft&logoColor=white)](https://minecraft.net)
 [![Fabric](https://img.shields.io/badge/Fabric_Loader-0.16.9+-DBB589?style=flat)](https://fabricmc.net)
 [![License](https://img.shields.io/github/license/IamSboby/Custom-icon-mcmod?style=flat&label=License)](LICENSE)
